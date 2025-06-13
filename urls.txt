@@ -1,0 +1,5 @@
+# Sample URLs for transcription
+# YouTube videos
+https://podcasts.apple.com/us/podcast/391-jimmy-iovine/id1141877104?i=1000712666304
+# Lines starting with # are comments and will be ignored
+# Add one URL per line
