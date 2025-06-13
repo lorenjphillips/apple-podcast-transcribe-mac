@@ -30,6 +30,25 @@ def sanitize_filename(filename: str) -> str:
     filename = filename.strip('_.')
     return filename
 
+def _progress_hook(d):
+    """Custom progress hook for yt-dlp to show single-line progress."""
+    if d['status'] == 'downloading':
+        if 'total_bytes' in d and d['total_bytes']:
+            percent = d['downloaded_bytes'] / d['total_bytes'] * 100
+            downloaded = d['downloaded_bytes'] / (1024 * 1024)  # MB
+            total = d['total_bytes'] / (1024 * 1024)  # MB
+            speed = d.get('speed', 0)
+            if speed:
+                speed_mb = speed / (1024 * 1024)  # MB/s
+                print(f"\rDownloading: {percent:.1f}% ({downloaded:.1f}/{total:.1f} MB) at {speed_mb:.2f} MB/s", end='', flush=True)
+            else:
+                print(f"\rDownloading: {percent:.1f}% ({downloaded:.1f}/{total:.1f} MB)", end='', flush=True)
+        elif 'downloaded_bytes' in d:
+            downloaded = d['downloaded_bytes'] / (1024 * 1024)  # MB
+            print(f"\rDownloading: {downloaded:.1f} MB", end='', flush=True)
+    elif d['status'] == 'finished':
+        print(f"\rDownload completed: {d['filename']}")  # New line after completion
+
 def download_audio(url: str, output_dir: str) -> Optional[Tuple[str, str]]:
     """Download audio from URL using yt-dlp. Returns (audio_file_path, title)."""
     ydl_opts = {
@@ -38,6 +57,9 @@ def download_audio(url: str, output_dir: str) -> Optional[Tuple[str, str]]:
         'extractaudio': True,
         'audioformat': 'mp3',
         'audioquality': '192K',
+        'progress_hooks': [_progress_hook],
+        'quiet': False,
+        'no_warnings': False,
     }
     
     try:
