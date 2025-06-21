@@ -34,7 +34,7 @@ env/
 .DS_Store
 
 # Project specific
-transcripts/
+# transcripts/ ENABLE PUSHING TO BRANCH
 .claude/
 *.log
 urls.txt
