@@ -37,26 +37,26 @@ Use the `apple_podcast_scraper.py` to extract episode URLs from any Apple Podcas
 
 ```bash
 # Extract all available episodes from a podcast
-python apple_podcast_scraper.py "https://podcasts.apple.com/us/podcast/founders/id1141877104"
+python apple_podcast_scraper.py scrape "https://podcasts.apple.com/us/podcast/founders/id1141877104"
 
 # Save to a custom file
-python apple_podcast_scraper.py "https://podcasts.apple.com/podcast/id123456" --output my_podcast_urls.txt
+python apple_podcast_scraper.py scrape "https://podcasts.apple.com/podcast/id123456" --output my_podcast_urls.txt
 
 # Search for specific episode ranges (great for finding older episodes)
-python apple_podcast_scraper.py "https://podcasts.apple.com/podcast/id123456" --range "1-100"
+python apple_podcast_scraper.py scrape "https://podcasts.apple.com/podcast/id123456" --range "1-100"
 ```
 
 ### Advanced Options
 
 ```bash
 # Append to existing file without validation
-python apple_podcast_scraper.py "https://podcasts.apple.com/podcast/id123456" --append --no-validate
+python apple_podcast_scraper.py scrape "https://podcasts.apple.com/podcast/id123456" --append --no-validate
 
 # Limit search requests to avoid rate limiting
-python apple_podcast_scraper.py "https://podcasts.apple.com/podcast/id123456" --max-requests 50
+python apple_podcast_scraper.py scrape "https://podcasts.apple.com/podcast/id123456" --max-requests 50
 
 # Skip searching for older episodes (recent episodes only)
-python apple_podcast_scraper.py "https://podcasts.apple.com/podcast/id123456" --no-search-older
+python apple_podcast_scraper.py scrape "https://podcasts.apple.com/podcast/id123456" --no-search-older
 ```
 
 ### Utility Commands
@@ -98,7 +98,7 @@ Once you have URLs, use the transcription system:
 
 ### Process multiple URLs from a file:
 ```bash
-python process_urls.py urls.txt
+python process_urls.py process-urls urls.txt
 ```
 
 ### Process a single URL:
@@ -113,10 +113,13 @@ python process_urls.py single-url "https://podcasts.apple.com/us/podcast/episode
 ### Examples:
 ```bash
 # Process all episodes with custom model
-python process_urls.py urls.txt --model medium
+python process_urls.py process-urls urls.txt --model medium
 
-# Process without copying to clipboard
-python process_urls.py urls.txt --no-clipboard
+# Process without copying to clipboard (recommended for large batches)
+python process_urls.py process-urls urls.txt --no-clipboard
+
+# Process with custom model and no clipboard
+python process_urls.py process-urls urls.txt --model medium --no-clipboard
 ```
 
 ## 📁 File Formats
@@ -152,13 +155,13 @@ Here's a complete example of scraping and transcribing a podcast:
 
 ```bash
 # 1. Extract all episode URLs
-python apple_podcast_scraper.py "https://podcasts.apple.com/us/podcast/founders/id1141877104" --output founders_urls.txt
+python apple_podcast_scraper.py scrape "https://podcasts.apple.com/us/podcast/founders/id1141877104" --output founders_urls.txt
 
 # 2. Review the URLs (optional)
 head -20 founders_urls.txt
 
 # 3. Transcribe all episodes
-python process_urls.py founders_urls.txt --model base
+python process_urls.py process-urls founders_urls.txt --model base
 
 # 4. Check results
 ls transcripts/
