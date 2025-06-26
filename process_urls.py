@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Script to process a list of URLs using macscribe-like functionality.
-Reads URLs from a file and processes them for transcription.
+Reads URLs from a txt file and processes them for transcription.
 """
 
 import os
